@@ -1,3 +1,5 @@
+import {getRandomInteger, getRandomArrayElement} from './utils.js';
+
 const IMAGECOUNT = 25;
 const MESSAGES = [
   'Всё отлично!',
@@ -29,18 +31,6 @@ const DESCRIPTIONS = [
   'Мои родные',
   'А вот и я',
 ];
-
-// функция для получения целого положительного рандомного числа в заданном диапозоне
-const getRandomInteger = (min, max) => {
-  const lower = Math.ceil(Math.min(Math.abs(min), Math.abs(max)));
-  const upper = Math.floor(Math.max(Math.abs(min), Math.abs(max)));
-  const result = Math.random() * (upper - lower + 1) + lower;
-
-  return Math.floor(result);
-};
-
-// функция для возвращения случайного элемента из массива
-const getRandomArrayElement = (elements) => elements[getRandomInteger(0, elements.length - 1)];
 
 const createCommentObject = (commentIndex) => ({
   id: 100 + commentIndex,
