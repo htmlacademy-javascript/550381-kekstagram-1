@@ -1,2 +1,5 @@
 import { createData } from './create-data.js';
-const data = createData();
+import { renderThumbnails } from './thumbnails.js';
+const pictures = createData();
+
+renderThumbnails(pictures);
