@@ -45,7 +45,7 @@ const createImageObject = (dataIndex) => ({
   url: `photos/${dataIndex + 1}.jpg`,
   description: getRandomArrayElement(DESCRIPTIONS),
   likes: getRandomInteger(15, 200),
-  comments: Array.from({length: getRandomInteger(3, 6)}, (_, index) => createCommentObject(index))
+  comments: Array.from({length: getRandomInteger(3, 15)}, (_, index) => createCommentObject(index))
 });
 
 const createData = () => Array.from({length: IMAGECOUNT}, (_, index) => createImageObject(index));
