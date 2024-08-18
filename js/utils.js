@@ -1,3 +1,5 @@
+const BODY = document.querySelector('body');
+
 // функция для получения целого положительного рандомного числа в заданном диапозоне
 const getRandomInteger = (min, max) => {
   const lower = Math.ceil(Math.min(Math.abs(min), Math.abs(max)));
@@ -14,4 +16,8 @@ const isEscapeKey = (evt) => evt.key === 'Escape';
 
 const isEnterKey = (evt) => evt.key === 'Enter';
 
-export {getRandomInteger, getRandomArrayElement, isEscapeKey, isEnterKey};
+export {BODY,
+  getRandomInteger,
+  getRandomArrayElement,
+  isEscapeKey,
+  isEnterKey};

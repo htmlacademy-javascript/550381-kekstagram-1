@@ -32,8 +32,14 @@ const DESCRIPTIONS = [
   'А вот и я',
 ];
 
+const MINLIKESCOUNT = 15;
+const MAXLIKESCOUNT = 200;
+const MINCOMMENTCOUNT = 3;
+const MAXCOMMENTCOUNT = 15;
+const STARTCOMMENTID = 100;
+
 const createCommentObject = (commentIndex) => ({
-  id: 100 + commentIndex,
+  id: STARTCOMMENTID + commentIndex,
   avatar: `img/avatar-${getRandomInteger(1, 6)}.svg`,
   message: Array.from({length: getRandomInteger(1, 2)}, () => getRandomArrayElement(MESSAGES)).join(' '),
   name: getRandomArrayElement(NAMES)
@@ -44,8 +50,8 @@ const createImageObject = (dataIndex) => ({
   id: dataIndex + 1,
   url: `photos/${dataIndex + 1}.jpg`,
   description: getRandomArrayElement(DESCRIPTIONS),
-  likes: getRandomInteger(15, 200),
-  comments: Array.from({length: getRandomInteger(3, 15)}, (_, index) => createCommentObject(index))
+  likes: getRandomInteger(MINLIKESCOUNT, MAXLIKESCOUNT),
+  comments: Array.from({length: getRandomInteger(MINCOMMENTCOUNT, MAXCOMMENTCOUNT)}, (_, index) => createCommentObject(index))
 });
 
 const createData = () => Array.from({length: IMAGECOUNT}, (_, index) => createImageObject(index));
