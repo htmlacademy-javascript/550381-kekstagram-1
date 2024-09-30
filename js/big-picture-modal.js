@@ -1,4 +1,5 @@
-import { BODY, isEscapeKey, isEnterKey } from './utils.js';
+import { isEscapeKey, isEnterKey } from './utils.js';
+import { openModal, closeModal } from './simple-modal.js';
 import {renderBigPicture, createComment, bigPictureModal} from './big-picture.js';
 
 const commentsList = bigPictureModal.querySelector('.social__comments');
@@ -46,15 +47,12 @@ const onDocumentEnterKeydown = (evt) => {
 };
 
 function hideBigPictureModal () {
-  bigPictureModal.classList.add('hidden');
-  BODY.classList.remove('modal-open');
-
+  closeModal(bigPictureModal);
   document.removeEventListener('keydown', onDocumentEscapeKeydown);
 }
 
 const showBigPictureModal = (picture) => {
-  bigPictureModal.classList.remove('hidden');
-  BODY.classList.add('modal-open');
+  openModal(bigPictureModal);
 
   renderBigPicture(picture);
   comments = picture.comments;
