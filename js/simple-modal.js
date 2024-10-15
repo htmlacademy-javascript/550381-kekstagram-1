@@ -1,13 +1,13 @@
-import { HTMLBODY } from './utils.js';
+import { HTML_BODY } from './utils.js';
 
 const openModal = (element) => {
   element.classList.remove('hidden');
-  HTMLBODY.classList.add('modal-open');
+  HTML_BODY.classList.add('modal-open');
 };
 
 const closeModal = (element) => {
   element.classList.add('hidden');
-  HTMLBODY.classList.remove('modal-open');
+  HTML_BODY.classList.remove('modal-open');
 };
 
 export { openModal, closeModal };

@@ -1,6 +1,4 @@
-const MIN_SCALE = 25;
-const MAX_SCALE = 100;
-const STEP_SCALE = 25;
+import { ScaleParams} from './utils.js';
 
 const sliderElementWrapper = document.querySelector('.img-upload__effect-level');
 const sliderElement = document.querySelector('.effect-level__slider');
@@ -12,32 +10,33 @@ const imgPreview = document.querySelector('.img-upload__preview img');
 
 sliderElementWrapper.classList.add('hidden');
 sliderElement.classList.add('hidden');
-scaleControlValue.value = `${MAX_SCALE}%`;
+scaleControlValue.value = `${ScaleParams.MAX_SCALE}%`;
 
-
-controlSmaller.addEventListener('click', () => {
-  let value = Number(scaleControlValue.value.slice(0, -1)) - STEP_SCALE;
+const onControlSmallerClick = () => {
+  let value = Number(scaleControlValue.value.slice(0, -1)) - ScaleParams.STEP_SCALE;
   imgPreview.style.transform = `scale(${value / 100})`;
-  if (value < MIN_SCALE) {
-    value = MIN_SCALE;
-    imgPreview.style.transform = `scale(${MIN_SCALE / 100})`;
+  if (value < ScaleParams.MIN_SCALE) {
+    value = ScaleParams.MIN_SCALE;
+    imgPreview.style.transform = `scale(${ScaleParams.MIN_SCALE / 100})`;
   }
 
   scaleControlValue.value = `${value}%`;
-});
+};
 
 
-controlBigger.addEventListener('click', () => {
-  let value = Number(scaleControlValue.value.slice(0, -1)) + STEP_SCALE;
+const onControlBiggerClick = () => {
+  let value = Number(scaleControlValue.value.slice(0, -1)) + ScaleParams.STEP_SCALE;
   imgPreview.style.transform = `scale(${value / 100})`;
-  if (value > MAX_SCALE) {
-    value = MAX_SCALE;
-    imgPreview.style.transform = `scale(${MAX_SCALE / 100})`;
+  if (value > ScaleParams.MAX_SCALE) {
+    value = ScaleParams.MAX_SCALE;
+    imgPreview.style.transform = `scale(${ScaleParams.MAX_SCALE / 100})`;
   }
 
   scaleControlValue.value = `${value}%`;
-});
+};
 
+controlSmaller.addEventListener('click', onControlSmallerClick);
+controlBigger.addEventListener('click', onControlBiggerClick);
 
 noUiSlider.create(sliderElement, {
   range: {
@@ -147,4 +146,4 @@ sliderElement.noUiSlider.on('update', () => {
   }
 });
 
-export {onClickRadio};
+export {onClickRadio, ScaleParams};

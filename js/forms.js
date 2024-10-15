@@ -1,10 +1,12 @@
 import { openModal, closeModal } from './simple-modal.js';
-import { isEscapeKey } from './utils.js';
+import { isEscapeKey, ScaleParams } from './utils.js';
 import { onClickRadio } from './sliders.js';
 
-const HASHTAG_SINTAX_ERROR_TEXT = 'Хэштег должен начинаться с #, не должен содержать спецсимволы.';
-const HASHTAG_LENGTH_ERROR_TEXT = 'Длина хэштега должна быть от 1 до 20 символов.';
-const HASHTAG_UNIQUE_ERROR_TEXT = 'Хэштеги не должны повторяться.';
+const ErrorHashtagText = {
+  TOO_LONG: 'Длина хэштега должна быть от 1 до 20 символов.',
+  WRONG_SYNTAX: 'Хэштег должен начинаться с #, не должен содержать спецсимволы.',
+  DUPLICATE: 'Хэштеги не должны повторяться.'
+};
 
 const effectsRadio = document.querySelectorAll('.effects__radio');
 const uploadForm = document.querySelector('.img-upload__form');
@@ -14,10 +16,11 @@ const uploadClose = uploadOverlay.querySelector('.img-upload__cancel');
 const hashtagField = uploadForm.querySelector('.text__hashtags');
 const commentField = uploadForm.querySelector('.text__description');
 const uploadSubmit = uploadForm.querySelector('#upload-submit');
+const scaleControlValue = document.querySelector('.scale__control--value');
 
 
 effectsRadio.forEach((radio) => {
-  radio.addEventListener('click', onClickRadio);
+  radio.addEventListener('change', onClickRadio);
 });
 
 // eslint-disable-next-line no-misleading-character-class
@@ -32,6 +35,7 @@ const pristine = new Pristine(uploadForm, {
 
 const openModalForm = () => {
   openModal(uploadOverlay);
+  scaleControlValue.value = `${ScaleParams.MAX_SCALE}%`;
   document.addEventListener('keydown', onDocumentEscapeKeydown);
 };
 
@@ -58,41 +62,35 @@ const getSplitHashtag = (value) => value
   .map((tag) => tag.trim())
   .filter((tag) => tag.length);
 
-const hasUniqueHashtag = (value) => {
-  const tags = getSplitHashtag(value);
+const hasUniqueHashtag = (tags) => {
   const lowerCaseHashtags = tags.map((tag) => tag.toLowerCase());
   return lowerCaseHashtags.length === new Set(lowerCaseHashtags).size;
 };
 
 
-const hasValidatedHashtag = (value) => {
-  const tags = getSplitHashtag(value);
-  return tags.every((tag) => validHashtag.test(tag));
+const hasValidatedLengthHashtag = (tags) => tags.every((tag) => tag.length >= 1 && tag.length <= 20);
+
+const getErrorText = () => {
+  const tags = getSplitHashtag(hashtagField.value);
+  switch (true) {
+    case !hasUniqueHashtag(tags):
+      return ErrorHashtagText.DUPLICATE;
+    case !hasValidatedLengthHashtag(tags):
+      return ErrorHashtagText.TOO_LONG;
+    default:
+      return ErrorHashtagText.WRONG_SYNTAX;
+  }
 };
 
-const hasValidatedLengthHashtag = (value) => {
+function hasValidatedHashtag (value) {
   const tags = getSplitHashtag(value);
-  return tags.every((tag) => tag.length >= 1 && tag.length <= 20);
-};
-
-
-pristine.addValidator(
-  hashtagField,
-  hasUniqueHashtag,
-  HASHTAG_UNIQUE_ERROR_TEXT
-);
-
+  return hasUniqueHashtag(tags) && hasValidatedLengthHashtag(tags) && tags.every((tag) => validHashtag.test(tag));
+}
 
 pristine.addValidator(
   hashtagField,
   hasValidatedHashtag,
-  HASHTAG_SINTAX_ERROR_TEXT
-);
-
-pristine.addValidator(
-  hashtagField,
-  hasValidatedLengthHashtag,
-  HASHTAG_LENGTH_ERROR_TEXT
+  () => getErrorText()
 );
 
 
@@ -100,18 +98,28 @@ const isValidForm = () => {
   const isValid = pristine.validate();
   if (!isValid) {
     uploadSubmit.disabled = true;
+    return false;
   } else {
     uploadSubmit.disabled = false;
+    return true;
   }
 };
 
 
-const onFormSubmit = (evt) => {
-  evt.preventDefault();
-  pristine.validate();
+const onFormSubmit = (cb) => {
+  uploadForm.addEventListener('submit', async (evt) => {
+    evt.preventDefault();
+    if (isValidForm()) {
+      uploadSubmit.disabled = true;
+      await cb(new FormData(evt.target));
+      uploadSubmit.disabled = false;
+    }
+  });
 };
 
 uploadInput.addEventListener('change', openModalForm);
 uploadClose.addEventListener('click', closeModalForm);
 uploadForm.addEventListener('change', isValidForm);
-uploadForm.addEventListener('submit', onFormSubmit);
+// uploadForm.addEventListener('submit', onFormSubmit);
+
+export { onFormSubmit, closeModalForm };

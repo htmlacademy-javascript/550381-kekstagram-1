@@ -1,5 +1,24 @@
-import { createData } from './create-data.js';
+import { getData, sendData } from './api.js';
 import { renderGalery } from './galery.js';
-import './forms.js';
+import { showAlert } from './utils.js';
+import { onFormSubmit, closeModalForm } from './forms.js';
+import { showErrorMessage, showSuccessMessage } from './message.js';
 
-renderGalery(createData());
+
+try {
+  const data = await getData();
+  renderGalery(data);
+} catch (err) {
+  showAlert(err.message);
+}
+
+
+onFormSubmit(async (data) => {
+  try {
+    await sendData(data);
+    closeModalForm();
+    showSuccessMessage();
+  } catch {
+    showErrorMessage();
+  }
+});
