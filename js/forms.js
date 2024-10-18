@@ -72,10 +72,11 @@ const hasValidatedLengthHashtag = (tags) => tags.every((tag) => tag.length >= 1 
 
 const getErrorText = () => {
   const tags = getSplitHashtag(hashtagField.value);
-  switch (true) {
-    case !hasUniqueHashtag(tags):
+  const flag = false;
+  switch (flag) {
+    case flag === !hasUniqueHashtag(tags):
       return ErrorHashtagText.DUPLICATE;
-    case !hasValidatedLengthHashtag(tags):
+    case flag === !hasValidatedLengthHashtag(tags):
       return ErrorHashtagText.TOO_LONG;
     default:
       return ErrorHashtagText.WRONG_SYNTAX;
@@ -98,10 +99,10 @@ const isValidForm = () => {
   const isValid = pristine.validate();
   if (!isValid) {
     uploadSubmit.disabled = true;
-    return false;
+    return isValid;
   } else {
     uploadSubmit.disabled = false;
-    return true;
+    return isValid;
   }
 };
 
@@ -120,6 +121,5 @@ const onFormSubmit = (cb) => {
 uploadInput.addEventListener('change', openModalForm);
 uploadClose.addEventListener('click', closeModalForm);
 uploadForm.addEventListener('change', isValidForm);
-// uploadForm.addEventListener('submit', onFormSubmit);
 
 export { onFormSubmit, closeModalForm };

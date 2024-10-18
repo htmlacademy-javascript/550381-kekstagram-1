@@ -74,56 +74,62 @@ const onClickRadio = (evt) => {
 
   imgPreview.className = `effects__preview--${effect}`;
 
-  if (effect === 'chrome') {
-    sliderValue.value = 1;
-    sliderElement.noUiSlider.updateOptions({
-      range: {
-        min: 0,
-        max: 1,
-      },
-      start: 1,
-      step: 0.1,
-    });
-  } else if (effect === 'sepia') {
-    sliderValue.value = 1;
-    sliderElement.noUiSlider.updateOptions({
-      range: {
-        min: 0,
-        max: 1,
-      },
-      start: 1,
-      step: 0.1,
-    });
-  } else if (effect === 'marvin') {
-    sliderValue.value = 100;
-    sliderElement.noUiSlider.updateOptions({
-      range: {
-        min: 0,
-        max: 100,
-      },
-      start: 100,
-      step: 1,
-    });
-  } else if (effect === 'phobos') {
-    sliderValue.value = 3;
-    sliderElement.noUiSlider.updateOptions({
-      range: {
-        min: 0,
-        max: 3,
-      },
-      start: 3,
-      step: 1,
-    });
-  } else if (effect === 'heat') {
-    sliderValue.value = 3;
-    sliderElement.noUiSlider.updateOptions({
-      range: {
-        min: 1,
-        max: 3,
-      },
-      start: 3,
-      step: 1,
-    });
+  switch (effect) {
+    case 'chrome':
+      sliderValue.value = 1;
+      sliderElement.noUiSlider.updateOptions({
+        range: {
+          min: 0,
+          max: 1,
+        },
+        start: 1,
+        step: 0.1,
+      });
+      break;
+    case 'sepia':
+      sliderValue.value = 1;
+      sliderElement.noUiSlider.updateOptions({
+        range: {
+          min: 0,
+          max: 1,
+        },
+        start: 1,
+        step: 0.1,
+      });
+      break;
+    case 'marvin':
+      sliderValue.value = 100;
+      sliderElement.noUiSlider.updateOptions({
+        range: {
+          min: 0,
+          max: 100,
+        },
+        start: 100,
+        step: 1,
+      });
+      break;
+    case 'phobos':
+      sliderValue.value = 3;
+      sliderElement.noUiSlider.updateOptions({
+        range: {
+          min: 0,
+          max: 3,
+        },
+        start: 3,
+        step: 1,
+      });
+      break;
+    case 'heat':
+      sliderValue.value = 3;
+      sliderElement.noUiSlider.updateOptions({
+        range: {
+          min: 1,
+          max: 3,
+        },
+        start: 3,
+        step: 1,
+      });
+      break;
   }
 };
 
@@ -133,16 +139,22 @@ sliderElement.noUiSlider.on('update', () => {
   sliderValue.value = value;
 
   const effect = imgPreview.className.split('--')[1];
-  if (effect === 'chrome') {
-    imgPreview.style.filter = `grayscale(${value})`;
-  } else if (effect === 'sepia') {
-    imgPreview.style.filter = `sepia(${value})`;
-  } else if (effect === 'marvin') {
-    imgPreview.style.filter = `invert(${value}%)`;
-  } else if (effect === 'phobos') {
-    imgPreview.style.filter = `blur(${value}px)`;
-  } else if (effect === 'heat') {
-    imgPreview.style.filter = `brightness(${value})`;
+  switch (effect) {
+    case 'chrome':
+      imgPreview.style.filter = `grayscale(${value})`;
+      break;
+    case 'sepia':
+      imgPreview.style.filter = `sepia(${value})`;
+      break;
+    case 'marvin':
+      imgPreview.style.filter = `invert(${value}%)`;
+      break;
+    case 'phobos':
+      imgPreview.style.filter = `blur(${value}px)`;
+      break;
+    case 'heat':
+      imgPreview.style.filter = `brightness(${value})`;
+      break;
   }
 });
 
