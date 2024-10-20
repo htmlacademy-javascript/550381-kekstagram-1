@@ -1213,6 +1213,21 @@ main {
   background-color: rgba(0, 0, 0, 0.8);
 }
 
+.alert-loader-data {
+  position: absolute;
+  padding: 30px 10px;
+  left: 0;
+  top: 0;
+  right: 0;
+  z-index: 100;
+  background-color: rgb(60, 54, 20);
+  color: rgb(255, 231, 83);
+  font-size: 32px;
+  text-align: center;
+  font-weight: 700;
+  line-height: 40px;
+}
+
 .error__inner,
 .success__inner {
   position: relative;
