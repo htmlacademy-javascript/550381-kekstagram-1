@@ -67,13 +67,9 @@ const setOnFilterClick = (callback) => {
 
 const init = (loadedPictures, callback) => {
   pictures = [...loadedPictures];
-
+  imgFilters.classList.remove('img-filters--inactive');
   setOnFilterClick(callback);
 };
 
 
-const showFilters = () => {
-  imgFilters.classList.remove('img-filters--inactive');
-};
-
-export { showFilters, init, getFilteredPictures };
+export { init, getFilteredPictures };

@@ -1,7 +1,6 @@
 import { openModal, closeModal } from './simple-modal.js';
 import { isEscapeKey, ScaleParams } from './utils.js';
 import { onClickRadio } from './sliders.js';
-import { showFilters } from './filters.js';
 
 const ErrorHashtagText = {
   TOO_LONG: 'Длина хэштега должна быть от 1 до 20 символов.',
@@ -115,7 +114,6 @@ const onFormSubmit = (cb) => {
       uploadSubmit.disabled = true;
       await cb(new FormData(evt.target));
       uploadSubmit.disabled = false;
-      showFilters();
     }
   });
 };
