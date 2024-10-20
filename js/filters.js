@@ -1,6 +1,3 @@
-// import { renderGalery } from './galery.js';
-// import { debounce } from './utils.js';
-
 const PICTURES_COUNT = 10;
 const Filter = {
   DEFAULT: 'filter-default',
@@ -27,8 +24,6 @@ const getFilteredPictures = () => {
       return pictures;
   }
 };
-
-// imgFilters.addEventListener('click', (evt) => {
 //   if (!evt.target.classList.contains('img-filters__button')) {
 //     return;
 //   }

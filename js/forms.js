@@ -1,6 +1,6 @@
 import { openModal, closeModal } from './simple-modal.js';
 import { isEscapeKey, ScaleParams } from './utils.js';
-import { onClickRadio } from './sliders.js';
+import { onClickRadio, resetScale, setDefaultSlider } from './sliders.js';
 
 const ErrorHashtagText = {
   TOO_LONG: 'Длина хэштега должна быть от 1 до 20 символов.',
@@ -12,6 +12,7 @@ const effectsRadio = document.querySelectorAll('.effects__radio');
 const uploadForm = document.querySelector('.img-upload__form');
 const uploadInput = uploadForm.querySelector('#upload-file');
 const uploadOverlay = document.querySelector('.img-upload__overlay');
+const previewImgUpload = document.querySelector('.img-upload__preview img');
 const uploadClose = uploadOverlay.querySelector('.img-upload__cancel');
 const hashtagField = uploadForm.querySelector('.text__hashtags');
 const commentField = uploadForm.querySelector('.text__description');
@@ -35,6 +36,8 @@ const pristine = new Pristine(uploadForm, {
 
 const openModalForm = () => {
   openModal(uploadOverlay);
+  const file = uploadInput.files[0];
+  previewImgUpload.src = URL.createObjectURL(file);
   scaleControlValue.value = `${ScaleParams.MAX_SCALE}%`;
   document.addEventListener('keydown', onDocumentEscapeKeydown);
 };
@@ -42,6 +45,8 @@ const openModalForm = () => {
 const closeModalForm = () => {
   uploadForm.reset();
   pristine.reset();
+  resetScale();
+  setDefaultSlider();
   closeModal(uploadOverlay);
   document.removeEventListener('keydown', onDocumentEscapeKeydown);
 };

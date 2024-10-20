@@ -1,4 +1,65 @@
-import { ScaleParams} from './utils.js';
+import { ScaleParams } from './utils.js';
+
+const SliderEffects = {
+  none:
+  {
+    name: 'none',
+    prop: '',
+    min: 0,
+    max: 100,
+    step: 1,
+  },
+
+  chrome:
+  {
+    name: 'chrome',
+    prop: 'grayscale',
+    min: 0,
+    max: 1,
+    step: 0.1,
+    unit: '',
+  },
+
+  sepia:
+  {
+    name: 'sepia',
+    prop: 'sepia',
+    min: 0,
+    max: 1,
+    step: 0.1,
+    unit: '',
+  },
+
+  marvin:
+  {
+    name: 'marvin',
+    prop: 'invert',
+    min: 0,
+    max: 100,
+    step: 1,
+    unit: '%',
+  },
+
+  phobos:
+  {
+    name: 'phobos',
+    prop: 'blur',
+    min: 0,
+    max: 3,
+    step: 0.1,
+    unit: 'px',
+  },
+
+  heat:
+  {
+    name: 'heat',
+    prop: 'brightness',
+    min: 1,
+    max: 3,
+    step: 0.1,
+    unit: '',
+  },
+};
 
 const sliderElementWrapper = document.querySelector('.img-upload__effect-level');
 const sliderElement = document.querySelector('.effect-level__slider');
@@ -35,6 +96,11 @@ const onControlBiggerClick = () => {
   scaleControlValue.value = `${value}%`;
 };
 
+const resetScale = () => {
+  imgPreview.style.transform = 'scale(1)';
+  scaleControlValue.value = `${ScaleParams.MAX_SCALE}%`;
+};
+
 controlSmaller.addEventListener('click', onControlSmallerClick);
 controlBigger.addEventListener('click', onControlBiggerClick);
 
@@ -60,77 +126,40 @@ noUiSlider.create(sliderElement, {
   },
 });
 
+
+const defaultSlider = SliderEffects.none;
+const setDefaultSlider = () => {
+  sliderElement.classList.add('hidden');
+  sliderElementWrapper.classList.add('hidden');
+  imgPreview.style.removeProperty('filter');
+  sliderValue.value = defaultSlider.prop;
+  imgPreview.className = `effects__preview--${defaultSlider.name}`;
+};
+
+const setParamsUpdateSlider = (effect) => {
+  if (effect === defaultSlider.name) {
+    setDefaultSlider();
+    return;
+  }
+
+  sliderElement.classList.remove('hidden');
+  sliderElementWrapper.classList.remove('hidden');
+
+  sliderValue.value = SliderEffects[effect].prop;
+  sliderElement.noUiSlider.updateOptions({
+    range: {
+      min: SliderEffects[effect].min,
+      max: SliderEffects[effect].max,
+    },
+    start: SliderEffects[effect].max,
+    step: SliderEffects[effect].step
+  });
+};
+
 const onClickRadio = (evt) => {
   const effect = evt.target.value;
-  if (effect === 'none') {
-    sliderElement.classList.add('hidden');
-    sliderElementWrapper.classList.add('hidden');
-    imgPreview.style.removeProperty('filter');
-    sliderValue.value = '';
-  } else {
-    sliderElement.classList.remove('hidden');
-    sliderElementWrapper.classList.remove('hidden');
-  }
-
   imgPreview.className = `effects__preview--${effect}`;
-
-  switch (effect) {
-    case 'chrome':
-      sliderValue.value = 1;
-      sliderElement.noUiSlider.updateOptions({
-        range: {
-          min: 0,
-          max: 1,
-        },
-        start: 1,
-        step: 0.1,
-      });
-      break;
-    case 'sepia':
-      sliderValue.value = 1;
-      sliderElement.noUiSlider.updateOptions({
-        range: {
-          min: 0,
-          max: 1,
-        },
-        start: 1,
-        step: 0.1,
-      });
-      break;
-    case 'marvin':
-      sliderValue.value = 100;
-      sliderElement.noUiSlider.updateOptions({
-        range: {
-          min: 0,
-          max: 100,
-        },
-        start: 100,
-        step: 1,
-      });
-      break;
-    case 'phobos':
-      sliderValue.value = 3;
-      sliderElement.noUiSlider.updateOptions({
-        range: {
-          min: 0,
-          max: 3,
-        },
-        start: 3,
-        step: 1,
-      });
-      break;
-    case 'heat':
-      sliderValue.value = 3;
-      sliderElement.noUiSlider.updateOptions({
-        range: {
-          min: 1,
-          max: 3,
-        },
-        start: 3,
-        step: 1,
-      });
-      break;
-  }
+  setParamsUpdateSlider(effect);
 };
 
 
@@ -158,4 +187,14 @@ sliderElement.noUiSlider.on('update', () => {
   }
 });
 
-export {onClickRadio, ScaleParams};
+// const resetSlider = () => {
+//   sliderElement.noUiSlider.updateOptions({
+//     range: {
+//       min: 0,
+//       max: 100,
+//     },
+//     start: 100
+//   });
+// };
+
+export {onClickRadio, ScaleParams, resetScale, setDefaultSlider };
