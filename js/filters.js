@@ -5,7 +5,7 @@ const Filter = {
   DISCUSSED: 'filter-discussed',
 };
 
-const imgFilters = document.querySelector('.img-filters');
+const imgFiltersElement = document.querySelector('.img-filters');
 
 let currentFilter = Filter.DEFAULT;
 let pictures = [];
@@ -24,25 +24,10 @@ const getFilteredPictures = () => {
       return pictures;
   }
 };
-//   if (!evt.target.classList.contains('img-filters__button')) {
-//     return;
-//   }
 
-//   const clickedFilter = evt.target;
-//   if (clickedFilter.id === currentFilter) {
-//     return;
-//   }
-
-//   imgFilters.querySelector('.img-filters__button--active').classList.remove('img-filters__button--active');
-//   clickedFilter.classList.add('img-filters__button--active');
-
-//   currentFilter = clickedFilter.id;
-//   const debouncedRenderGalery = debounce(renderGalery);
-//   debouncedRenderGalery(getFilteredPictures());
-// });
 
 const setOnFilterClick = (callback) => {
-  imgFilters.addEventListener('click', (evt) => {
+  imgFiltersElement.addEventListener('click', (evt) => {
     if (!evt.target.classList.contains('img-filters__button')) {
       return;
     }
@@ -52,7 +37,7 @@ const setOnFilterClick = (callback) => {
       return;
     }
 
-    imgFilters.querySelector('.img-filters__button--active').classList.remove('img-filters__button--active');
+    imgFiltersElement.querySelector('.img-filters__button--active').classList.remove('img-filters__button--active');
     clickedFilter.classList.add('img-filters__button--active');
 
     currentFilter = clickedFilter.id;
@@ -62,7 +47,7 @@ const setOnFilterClick = (callback) => {
 
 const init = (loadedPictures, callback) => {
   pictures = [...loadedPictures];
-  imgFilters.classList.remove('img-filters--inactive');
+  imgFiltersElement.classList.remove('img-filters--inactive');
   setOnFilterClick(callback);
 };
 

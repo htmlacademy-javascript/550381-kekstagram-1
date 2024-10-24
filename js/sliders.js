@@ -187,14 +187,4 @@ sliderElement.noUiSlider.on('update', () => {
   }
 });
 
-// const resetSlider = () => {
-//   sliderElement.noUiSlider.updateOptions({
-//     range: {
-//       min: 0,
-//       max: 100,
-//     },
-//     start: 100
-//   });
-// };
-
 export {onClickRadio, ScaleParams, resetScale, setDefaultSlider };

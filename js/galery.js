@@ -2,7 +2,7 @@ import { renderThumbnails } from './thumbnails.js';
 import { showBigPictureModal } from './big-picture-modal.js';
 import { isEnterKey } from './utils.js';
 
-const picturesBlock = document.querySelector('.pictures');
+const picturesElement = document.querySelector('.pictures');
 
 
 const connectThumbnailsWithBigPicture = (evt, pictures) => {
@@ -26,7 +26,7 @@ const onDocumentEnterKeydown = (evt, pictures) => {
 
 
 const renderGalery = (pictures) => {
-  picturesBlock.addEventListener('click', (evt) => {
+  picturesElement.addEventListener('click', (evt) => {
     connectThumbnailsWithBigPicture(evt, pictures);
   });
 
