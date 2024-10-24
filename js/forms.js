@@ -2,10 +2,13 @@ import { openModal, closeModal } from './simple-modal.js';
 import { isEscapeKey, ScaleParams } from './utils.js';
 import { onClickRadio, resetScale, setDefaultSlider } from './sliders.js';
 
+const FILES_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
+const MAX_HASHTAG_COUNT = 5;
 const ErrorHashtagText = {
   TOO_LONG: 'Длина хэштега должна быть от 1 до 20 символов.',
   WRONG_SYNTAX: 'Хэштег должен начинаться с #, не должен содержать спецсимволы.',
-  DUPLICATE: 'Хэштеги не должны повторяться.'
+  DUPLICATE: 'Хэштеги не должны повторяться.',
+  MAX_COUNT:'Нельзя использовать больше пяти хештегов'
 };
 
 const effectsRadio = document.querySelectorAll('.effects__radio');
@@ -13,6 +16,7 @@ const uploadForm = document.querySelector('.img-upload__form');
 const uploadInput = uploadForm.querySelector('#upload-file');
 const uploadOverlay = document.querySelector('.img-upload__overlay');
 const previewImgUpload = document.querySelector('.img-upload__preview img');
+const previewEffects = document.querySelectorAll('.effects__preview');
 const uploadClose = uploadOverlay.querySelector('.img-upload__cancel');
 const hashtagField = uploadForm.querySelector('.text__hashtags');
 const commentField = uploadForm.querySelector('.text__description');
@@ -34,10 +38,26 @@ const pristine = new Pristine(uploadForm, {
   errorTextClass: 'img-upload__text-error'
 });
 
+const setPreviewPicture = (container) => {
+  const file = container.files[0];
+  const fileName = file.name.toLowerCase();
+
+  const matches = FILES_TYPES.some((it) => fileName.endsWith(it));
+
+  if (!matches) {
+    return;
+  }
+
+  previewImgUpload.src = URL.createObjectURL(file);
+  previewEffects
+    .forEach((item) => {
+      item.style.backgroundImage = `url(${previewImgUpload.src})`;
+    });
+};
+
 const openModalForm = () => {
   openModal(uploadOverlay);
-  const file = uploadInput.files[0];
-  previewImgUpload.src = URL.createObjectURL(file);
+  setPreviewPicture(uploadInput);
   scaleControlValue.value = `${ScaleParams.MAX_SCALE}%`;
   document.addEventListener('keydown', onDocumentEscapeKeydown);
 };
@@ -83,6 +103,8 @@ const getErrorText = () => {
       return ErrorHashtagText.DUPLICATE;
     case flag === !hasValidatedLengthHashtag(tags):
       return ErrorHashtagText.TOO_LONG;
+    case flag === tags.length > MAX_HASHTAG_COUNT:
+      return ErrorHashtagText.MAX_COUNT;
     default:
       return ErrorHashtagText.WRONG_SYNTAX;
   }
@@ -90,7 +112,7 @@ const getErrorText = () => {
 
 function hasValidatedHashtag (value) {
   const tags = getSplitHashtag(value);
-  return hasUniqueHashtag(tags) && hasValidatedLengthHashtag(tags) && tags.every((tag) => validHashtag.test(tag));
+  return hasUniqueHashtag(tags) && hasValidatedLengthHashtag(tags) && tags.every((tag) => validHashtag.test(tag) && tags.length <= MAX_HASHTAG_COUNT);
 }
 
 pristine.addValidator(
@@ -127,4 +149,4 @@ uploadInput.addEventListener('change', openModalForm);
 uploadClose.addEventListener('click', closeModalForm);
 uploadForm.addEventListener('change', isValidForm);
 
-export { onFormSubmit, closeModalForm };
+export { onFormSubmit, closeModalForm, onDocumentEscapeKeydown };

@@ -1,12 +1,13 @@
-const alertTemplate = document.querySelector('#alert-loader-data').content.querySelector('.alert-loader-data');
 const HTML_BODY = document.querySelector('body');
 const ALERT_SHOW_DELAY = 5000;
+const TIMEOUT_DELAY = 500;
 const ScaleParams = {
   MIN_SCALE: 25,
   MAX_SCALE: 100,
   STEP_SCALE: 25
 };
-const TIMEOUT_DELAY = 500;
+
+const alertTemplate = document.querySelector('#alert-loader-data').content.querySelector('.alert-loader-data');
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
 const isEnterKey = (evt) => evt.key === 'Enter';

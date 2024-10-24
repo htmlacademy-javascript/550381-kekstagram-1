@@ -3,7 +3,8 @@ import { openModal, closeModal } from './simple-modal.js';
 import {renderBigPicture, createComment, bigPictureModal} from './big-picture.js';
 
 const commentsList = bigPictureModal.querySelector('.social__comments');
-const socialCommentCount = bigPictureModal.querySelector('.social__comment-count');
+const commentsCountView = bigPictureModal.querySelector('.comments-count-view');
+const commentsCountAll = bigPictureModal.querySelector('.comments-count');
 const socialCommentLoader = bigPictureModal.querySelector('.comments-loader');
 let comments = [];
 let commentCount = 0;
@@ -28,7 +29,8 @@ const renderComments = () => {
 
   commentsList.innerHTML = '';
   commentsList.append(fragment);
-  socialCommentCount.innerHTML = `${commentCount} из <span class="comments-count">${comments.length}</span> комментариев`;
+  commentsCountView.textContent = commentCount;
+  commentsCountAll.textContent = comments.length;
 };
 
 
