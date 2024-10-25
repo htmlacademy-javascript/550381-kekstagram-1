@@ -37,7 +37,8 @@ const showErrorMessage = () => {
   document.addEventListener('keydown', onDocumentErrorEscapeKeydown);
   errorButton.addEventListener('click', closeErrorMessage);
   errorElement.addEventListener('click', (evt) => {
-    if (evt.target !== document.querySelector('.error__inner')) {
+    const element = document.querySelector('.error__inner');
+    if (element && element !== evt.target) {
       closeErrorMessage();
     }
   });
@@ -52,7 +53,8 @@ const showSuccessMessage = () => {
   document.addEventListener('keydown', onDocumentSuccessEscapeKeydown);
   successButton.addEventListener('click', closeSuccessMessage);
   successElement.addEventListener('click', (evt) => {
-    if (evt.target !== document.querySelector('.success__inner')) {
+    const element = document.querySelector('.success__inner');
+    if (element && element !== evt.target) {
       closeSuccessMessage();
     }
   });
