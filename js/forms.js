@@ -2,7 +2,7 @@ import { openModal, closeModal } from './simple-modal.js';
 import { isEscapeKey, ScaleParams } from './utils.js';
 import { onClickRadio, resetScale, setDefaultSlider } from './sliders.js';
 
-const FILES_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
+const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 const MAX_HASHTAG_COUNT = 5;
 const ErrorHashtagText = {
   TOO_LONG: 'Длина хэштега должна быть от 1 до 20 символов.',
@@ -42,7 +42,7 @@ const setPreviewPicture = (container) => {
   const file = container.files[0];
   const fileName = file.name.toLowerCase();
 
-  const matches = FILES_TYPES.some((it) => fileName.endsWith(it));
+  const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
 
   if (!matches) {
     return;

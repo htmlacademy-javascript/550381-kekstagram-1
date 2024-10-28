@@ -54,6 +54,9 @@ function hideBigPictureModal () {
 }
 
 const showBigPictureModal = (picture) => {
+  if (!picture) {
+    return;
+  }
   openModal(bigPictureModal);
 
   renderBigPicture(picture);
